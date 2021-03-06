@@ -29,10 +29,13 @@ firebase.auth().onAuthStateChanged(async function(user) {
 
     if (isCoach) {
       document.querySelector('.student-coach').classList.add('hidden')
-      let studentsNotContacted = unassignedstudents()
+      let temp = await unassignedstudents()
+      studentsNotContacted = temp.students
       let studentsAssigned = 0
       printCoachPage(studentsNotContacted,studentsAssigned)
-
+      document.querySelector('.unassigned').addEventListener('click', function(event) {
+        document.location.href = 'newStudents.html'
+      })
       // stuff that happens when Coach
     } else if (isStudent) {
       document.querySelector('.student-coach').classList.add('hidden')
@@ -159,16 +162,25 @@ function displaySurvey(user){
   `
 }
 
-function printCoachPage(notContacted,Assigned) {
+async function printCoachPage(notContacted,Assigned) {
   document.querySelector('.main-body').innerHTML = `
   <div class="p-3 sm:flex">
-  <a href="assignedStudents.html" class="sm:w-1/2 coach-button block text-center text-white bg-gray-400 mt-4 px-4 mx-4 py-2 rounded">Students Contacted</a>
-  <a href="newStudents.html" class="sm:w-1/2 student-button block text-center text-white bg-gray-400 mt-4 px-4 mx-4 py-2 rounded">Students Waiting to be Contacted</a>
-  </div>
+    <div class="assigned sm:w-1/2 block text-center text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded">
+      <div>Students Contacted:</div>
+      <a href=# class="text-green-500 text-3xl">${Assigned}</a>
+    </div>
+    <div class="unassigned sm:w-1/2 block text-center text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded">
+      <div>Students Waiting to be Contacted:</div>
+      <a href=# class="text-green-500 text-3xl">${notContacted}</a>
+    </div>
   `
 }
 
-function unassignedstudents() {
-  let response = await fetch('/.netlify/functions/get_posts')
-    let posts = await response.json()
+async function unassignedstudents() {
+  let response = await fetch('/.netlify/functions/number_of_unassigned_students')
+    let students = await response.json()
+    return {
+      students
+    }
+
 }
