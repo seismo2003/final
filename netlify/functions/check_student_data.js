@@ -3,18 +3,28 @@ let firebase = require('./firebase')
 
 exports.handler = async function(event) {
   let db = firebase.firestore()
-  
-  let studentId = JSON.parse(event.body)
+  console.log(`in check`)
+  let studentId = event.body
 
 
-  let querySnapshot = await db.collection('studentData')
+  let tempVariable = await db.collection('studentData')
                               .where('studentId', '==', studentId)
                               .get()
-  let dataExists = querySnapshot.data()
   
+  let exists = tempVariable.size
+  // console.log(data.created)
+  // let dataExists = querySnapshot.data().created
+  // console.log(dataExists)
+  if (exists == 1) {
     return {
-    statusCode: 200,
-    body: JSON.stringify(dataExists)
+      statusCode: 200,
+      body: 'found'
+    }
+  } else {
+    return {    
+      statusCode: 404,
+      body: 'not found'
+    }
   }
 
 }

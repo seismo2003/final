@@ -29,46 +29,27 @@ firebase.auth().onAuthStateChanged(async function(user) {
 
     if (isCoach) {
       document.querySelector('.student-coach').classList.add('hidden')
-      console.log(`is Coach`)
+      
       // stuff that happens when Coach
     } else if (isStudent) {
       document.querySelector('.student-coach').classList.add('hidden')
-      console.log(`is Student`)
+
       
-      let response = await fetch('/.netlify/functions/check_student_data', {
+      let checkStudentResponse = await fetch('/.netlify/functions/check_student_data', {
         method: 'POST',
         body: user.uid
       })
-      let checkStudent = await response.json()
+      // console.log(checkStudentResponse)
+      let checkStudent = checkStudentResponse.status
 
-      if(checkStudent)
+      if(checkStudent == 200)
       {
         document.querySelector('.main-body').innerHTML = `
         <div class="mb-1">
-        Thank you ${user.displayName}, your form has been submitted succesfully. A coach will reach out to you soon!
+        Thank you <strong>${user.displayName}</strong>, your form has been submitted succesfully. A coach will reach out to you soon!
         </div>`
       } else {
-            
-        document.querySelector('.main-body').innerHTML = `
-        <div class="mb-1">
-        Welcome <strong>${user.displayName}</strong>, please fill out the following survey
-        </div>
-        <form class="bg-gray-100 p-1 rounded">
-        <label for="program">What program would you want to study?</label>
-        <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="program" name="program"></p>
-
-        <label for="company">What is the name of your <strong>Company</strong>? </label>
-        <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="company" name="company"> </p>                                 
-      
-        <label for="number">What is a good contact <strong>phone number</strong>? </label>
-        <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="number" name="number"> </p> 
-
-        <label for="start">When would you want to start?</label>
-        <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="start" name="start"> </p> 
-
-        <button class="bg-green-500 text-white mt-1 px-4 py-2 rounded">Submit Form</button>
-        </form>
-        `
+        displaySurvey(user)    
 
         document.querySelector('form').addEventListener('submit', async function(event) {
           // need to refresh so that form goes away!
@@ -89,8 +70,6 @@ firebase.auth().onAuthStateChanged(async function(user) {
             start: startText
           }
 
-          console.log(newStudent)
-
           let response = await fetch('/.netlify/functions/add_student_data', {
             method: 'POST',
             body: JSON.stringify(
@@ -100,7 +79,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
           if (response) {
             document.querySelector('.main-body').innerHTML = `
             <div class="mb-1">
-            Thank you ${user.displayName}, your form has been submitted succesfully. A coach will reach out to you soon!
+            Thank you <strong>${user.displayName}</strong>, your form has been submitted succesfully. A coach will reach out to you soon!
             </div>`
           }
           
@@ -155,5 +134,24 @@ firebase.auth().onAuthStateChanged(async function(user) {
 })
 
 function displaySurvey(user){
+  document.querySelector('.main-body').innerHTML = `
+  <div class="mb-1">
+  Welcome <strong>${user.displayName}</strong>, please fill out the following survey
+  </div>
+  <form class="bg-gray-100 p-1 rounded">
+  <label for="program">What program would you want to study?</label>
+  <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="program" name="program"></p>
 
+  <label for="company">What is the name of your <strong>Company</strong>? </label>
+  <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="company" name="company"> </p>                                 
+
+  <label for="number">What is a good contact <strong>phone number</strong>? </label>
+  <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="number" name="number"> </p> 
+
+  <label for="start">When would you want to start?</label>
+  <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="start" name="start"> </p> 
+
+  <button class="bg-green-500 text-white mt-1 px-4 py-2 rounded">Submit Form</button>
+  </form>
+  `
 }
