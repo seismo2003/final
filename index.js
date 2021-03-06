@@ -29,7 +29,10 @@ firebase.auth().onAuthStateChanged(async function(user) {
 
     if (isCoach) {
       document.querySelector('.student-coach').classList.add('hidden')
-      
+      let studentsNotContacted = unassignedstudents()
+      let studentsAssigned = 0
+      printCoachPage(studentsNotContacted,studentsAssigned)
+
       // stuff that happens when Coach
     } else if (isStudent) {
       document.querySelector('.student-coach').classList.add('hidden')
@@ -154,4 +157,18 @@ function displaySurvey(user){
   <button class="bg-green-500 text-white mt-1 px-4 py-2 rounded">Submit Form</button>
   </form>
   `
+}
+
+function printCoachPage(notContacted,Assigned) {
+  document.querySelector('.main-body').innerHTML = `
+  <div class="p-3 sm:flex">
+  <a href="assignedStudents.html" class="sm:w-1/2 coach-button block text-center text-white bg-gray-400 mt-4 px-4 mx-4 py-2 rounded">Students Contacted</a>
+  <a href="newStudents.html" class="sm:w-1/2 student-button block text-center text-white bg-gray-400 mt-4 px-4 mx-4 py-2 rounded">Students Waiting to be Contacted</a>
+  </div>
+  `
+}
+
+function unassignedstudents() {
+  let response = await fetch('/.netlify/functions/get_posts')
+    let posts = await response.json()
 }
