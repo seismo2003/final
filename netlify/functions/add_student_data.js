@@ -3,7 +3,8 @@ let firebase = require('./firebase')
 
 exports.handler = async function(event) {
   let db = firebase.firestore()
-console.log('in student data')
+  
+  console.log('in student data')
   // console.log(event)
   let body = JSON.parse(event.body)
   let studentId = body.studentId
