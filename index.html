@@ -9,15 +9,33 @@
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.3/firebase-ui-auth.css" />
 </head>
 
-<body>
-  <div class="sign-in-or-sign-out"></div>
- 
+<body class="bg-white">
+  <div class="sign-in-or-sign-out pb-1 pt-1 px-2 text-white text-center border-b border-white bg-green-500">
+    <!-- JavaScript puts stuff here -->
+  </div>
+  
+  <div class="welcome pt-2 pl-2 text-green-500 text-left text-2xl">
+    Welcome to your Vinco dashboard!
+  </div>
+
+  <div class="student-coach pt-5  text-center text-3xl">
+    <!-- Buttons will go here! -->
+    <!-- Student/coach buttons go here -->
+  </div>
+  
+  <div class="main-body pt-1 px-16 pb-16 md:flex md:flex-wrap">
+    <!-- JavaScript puts stuff here -->
+  </div>
+
   <!-- Put the Firebase config here -->
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
   <!-- Firebase Auth -->
+  
   <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/ui/4.7.3/firebase-ui-auth.js"></script>
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script> -->
 
   <script>
     // Your web app's Firebase configuration
@@ -29,9 +47,10 @@
       messagingSenderId: "1077432767587",
       appId: "1:1077432767587:web:b169091c7081c8c3b1d456",
       measurementId: "G-JY5TTQHTPB"
-    } // replace
+    }; // replace
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    // firebase.analytics();
   </script>
   <script src="index.js"></script>
 </body>
