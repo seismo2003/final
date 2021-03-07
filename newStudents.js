@@ -22,6 +22,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
       let response = await fetch('/.netlify/functions/unassigned_students')
       let students = await response.json()
       // console.log(students)
+      console.log(students.length)
       if (students.length>0) {
         for (i = 0; i<students.length; i++) {
           printStudent(students[i]) // must create function
@@ -37,7 +38,26 @@ firebase.auth().onAuthStateChanged(async function(user) {
 })
 
 async function printStudent(student) {
-  // console.log(student)
-  let studentData = student.data()
-  console.log(studentData)
+  document.querySelector('.main-body').insertAdjacentHTML('beforeend', `
+  <div class = "text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded">
+    <div> <strong>Name:</strong> ${student.studentName} </div>
+    <div> <strong>e-mail:</strong> ${student.studentEmail} </div>
+    <div> <strong>Company:</strong> ${student.company} </div>
+    <div> <strong>Desired Program:</strong> ${student.program} </div>
+  </div>
+    `
+  )
+  console.log(
+    `student ID is ${student.studentId}`
+    )
+  let studentData = student
+  // studentId: currentStudent.studentId,
+  // studentName: currentStudent.studentName,
+  // studentEmail: currentStudent.studentEmail,
+  // program: currentStudent.program,
+  // company:  currentStudent.company,
+  // number: currentStudent.number,
+  // start: currentStudent.start,
+  // created: currentStudent.createdStamp
+
 }
