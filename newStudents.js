@@ -38,12 +38,19 @@ firebase.auth().onAuthStateChanged(async function(user) {
 })
 
 async function printStudent(student) {
+  
   document.querySelector('.main-body').insertAdjacentHTML('beforeend', `
-  <div class = "text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded">
-    <div> <strong>Name:</strong> ${student.studentName} </div>
-    <div> <strong>e-mail:</strong> ${student.studentEmail} </div>
-    <div> <strong>Company:</strong> ${student.company} </div>
-    <div> <strong>Desired Program:</strong> ${student.program} </div>
+  <div class = "sm:flex text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded">
+    <div class="w-1/2">  
+      <div> <strong>Name:</strong> ${student.studentName} </div>
+      <div> <strong>e-mail:</strong> ${student.studentEmail} </div>
+      <div> <strong>Company:</strong> ${student.company} </div>
+      <div> <strong>Desired Program:</strong> ${student.program} </div>
+      <div> <strong>Registered:</strong> ${student.created} </div>
+    </div>
+    <div class="w-1/2"> 
+      <button class="text-gray-500 bg-green-500 my-4 px-4 mx-4 py-2 rounded"> Contact </button>
+    </div>
   </div>
     `
   )
