@@ -9,6 +9,19 @@ exports.handler = async function(event) {
   let body = JSON.parse(event.body)
   let coach = body.coach
   let student = body.student
+
+  // console.log(`coach is ${coach}`)
+  // console.log(`student is ${student}`)
+  let tempVariable = await db.collection('studentData').where('studentId', '==', student).get()
+  let tempId = tempVariable.docs[0].id
+  let tempTimestamp =  firebase.firestore.FieldValue.serverTimestamp()
+
+  db.collection("studentData").doc(tempId).set({
+    coach: coach,
+    coachTimestamp: tempTimestamp 
+  }, {merge:true})
+
+  
   // let studentId = body.studentId
   // let studentName = body.studentName
   // let studentEmail = body.studentEmail
@@ -29,7 +42,7 @@ exports.handler = async function(event) {
   //   start: start,
   //   created: createdStamp,
   //   coach: "unassigned"
-  }
+  // }
 
   // let newPost = await db.collection('studentData').add(newStudent)
   

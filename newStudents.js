@@ -3,10 +3,16 @@ let db = firebase.firestore()
 firebase.auth().onAuthStateChanged(async function(user) {
     if (user) {
       document.querySelector('.sign-in-or-sign-out').innerHTML = `
-      <div class="sm: flex">
-        <div class="w-1/3 text-left">Signed in as <strong>${user.displayName}</strong></div>
-        <button class="w-1/3 text-white underline home text-center">Home</button>
-        <button class="w-1/3 text-pink-500 underline sign-out text-right">Sign Out</button>
+      <div class="sm: flex items-center mx-4 mt-2">
+        <div class="w-1/2 text-left flex items-center">
+          <div class="mx-2 home"><img href="index.html" src="assets/Vinco_Logo1.webp" alt="Vinco"/></div>
+          <div class="text-left text-gray-400 text-4xl">Vinco</div>
+        </div>
+    
+        <div class="w-1/2 text-right">
+        <div class="w-full text-gray-600">Signed in as <strong>${user.displayName}</strong>
+        <button class="w-full text-gray-600 underline sign-out text-right">Sign Out</button>
+        </div>
       </div>`
 
       document.querySelector('.sign-out').addEventListener('click', function(event) {
@@ -25,7 +31,6 @@ firebase.auth().onAuthStateChanged(async function(user) {
       if (students.length>0) {
         for (i = 0; i<students.length; i++) {
           printStudent(students[i]) 
-          console.log(students[i].studentId)
           let currentStudent = students[i]
           document.querySelector(`.contact-${students[i].studentId}`).addEventListener('click', async function(event) {
             // assign student to coach NEEED TO EDIT BELOW
@@ -39,7 +44,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
               }
               )
             })
-            console.log('contact button clicked')
+            document.location.href = 'newStudents.html'
           })
         }
         
@@ -71,33 +76,22 @@ async function printStudent(student) {
 
 
   document.querySelector('.main-body').insertAdjacentHTML('beforeend', `
-  <div class = "sm:flex text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded">
-    <div class="w-1/2">  
+  <div class = "sm:flex text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded items-center">
+    <div class="w-full sm:w-1/2">  
       <div> <strong>Name:</strong> ${student.studentName} </div>
       <div> <strong>e-mail:</strong> ${student.studentEmail} </div>
       <div> <strong>Company:</strong> ${student.company} </div>
       <div> <strong>Desired Program:</strong> ${student.program} </div>
       <div> <strong>Registered:</strong> ${student.created} </div>
     </div>
-    <div class="w-1/2"> 
-      <button class="text-gray-500 bg-green-500 my-4 px-4 mx-4 py-2 rounded contact contact-${student.studentId}"> Contact </button>
+    <div class="w-full sm:w-1/2 my-1 items-center"> 
+      <button class="w-full text-gray-100 text-xl bg-green-500 hover:bg-green-600 px-4 py-2 m-auto rounded contact contact-${student.studentId}"> Assign to me </button>
     </div>
   </div>
     `
   )
   
-  // console.log(
-  //   `shortDate is ${student.shortDate}`
-  //   )
-  let studentData = student
-  // studentId: currentStudent.studentId,
-  // studentName: currentStudent.studentName,
-  // studentEmail: currentStudent.studentEmail,
-  // program: currentStudent.program,
-  // company:  currentStudent.company,
-  // number: currentStudent.number,
-  // start: currentStudent.start,
-  // created: currentStudent.createdStamp
+
 
 }
 

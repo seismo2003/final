@@ -12,14 +12,13 @@
     let studentArray = []
     for (i = 0; i < studentData.length; i ++) {
       let currentStudent = studentData[i].data()
-
       let assigned = currentStudent.coach
 
       if (assigned == "unassigned") {
         
         let date = currentStudent.created.toDate()
         let month = date.getMonth() +1
-        let day = date.getDay()
+        let day = date.getDate()
         let year = date.getYear() + 1900
         let hours = date.getHours()
         let minutes = date.getMinutes()

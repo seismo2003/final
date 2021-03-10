@@ -10,10 +10,17 @@ firebase.auth().onAuthStateChanged(async function(user) {
     
     console.log('signed in')
     document.querySelector('.sign-in-or-sign-out').innerHTML = `
-      <div class="sm: flex">
-        <div class="w-1/2 text-left">Signed in as <strong>${user.displayName}</strong></div>
-        <button class="w-1/2 text-pink-500 underline sign-out text-right">Sign Out</button>
-      </div>`
+    <div class="sm: flex items-center mx-4 mt-2">
+    <div class="w-1/2 text-left flex items-center">
+      <div class="mx-2 home"><img src="assets/Vinco_Logo1.webp" alt="Vinco"/></div>
+      <div class="text-left text-gray-400 text-4xl">Vinco</div>
+    </div>
+
+    <div class="w-1/2 text-right">
+    <div class="w-full text-gray-600">Signed in as <strong>${user.displayName}</strong>
+    <button class="w-full text-gray-600 underline sign-out text-right">Sign Out</button>
+    </div>
+  </div>`
 
     document.querySelector('.sign-out').addEventListener('click', function(event) {
       console.log('sign out clicked')
@@ -30,13 +37,16 @@ firebase.auth().onAuthStateChanged(async function(user) {
     if (isCoach) {
       document.querySelector('.student-coach').classList.add('hidden')
       let temp = await unassignedstudents()
-      studentsNotContacted = temp.students
-      let studentsAssigned = 0
+      studentsNotContacted = temp.returnNumber
+      let temp2 = await assignedstudents(user.uid)
+      let studentsAssigned = temp2.returnNumber
       printCoachPage(studentsNotContacted,studentsAssigned)
       document.querySelector('.unassigned').addEventListener('click', function(event) {
         document.location.href = 'newStudents.html'
       })
-      // stuff that happens when Coach
+      document.querySelector('.assigned').addEventListener('click', function(event) {
+        document.location.href = 'assignedStudents.html'
+      })
     } else if (isStudent) {
       document.querySelector('.student-coach').classList.add('hidden')
 
@@ -95,8 +105,8 @@ firebase.auth().onAuthStateChanged(async function(user) {
     } else {
       document.querySelector('.student-coach').innerHTML =  `
         <div class="p-3 sm:flex">
-          <a href="#" class="sm:w-1/2 coach-button block text-center text-white bg-gray-400 mt-4 px-4 mx-4 py-2 rounded">Coach</a>
-          <a href="#" class="sm:w-1/2 student-button block text-center text-white bg-gray-400 mt-4 px-4 mx-4 py-2 rounded">Student</a>
+          <a href="#" class="sm:w-1/2 coach-button block text-center text-white text-xl bg-green-500 hover:bg-green-700 mt-4 px-4 mx-4 py-2 rounded">Coach</a>
+          <a href="#" class="sm:w-1/2 student-button block text-center text-white text-xl bg-green-500 hover:bg-green-700 mt-4 px-4 mx-4 py-2 rounded">Student</a>
           </div>
       `
       document.querySelector('.coach-button').addEventListener('click', function(event) {
@@ -166,22 +176,43 @@ async function printCoachPage(notContacted,Assigned) {
   document.querySelector('.main-body').innerHTML = `
   <div class="p-3 sm:flex">
     <div class="assigned sm:w-1/2 block text-center text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded">
-      <div>Students Contacted:</div>
-      <a href=# class="text-green-500 text-3xl">${Assigned}</a>
+      <div>Students Assigned to you:</div>
+      <a href=# class="text-green-500 hover:text-green-600 text-3xl">${Assigned}</a>
     </div>
     <div class="unassigned sm:w-1/2 block text-center text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded">
       <div>Students Waiting to be Contacted:</div>
-      <a href=# class="text-green-500 text-3xl">${notContacted}</a>
+      <a href=# class="text-green-500 hover:text-green-600 text-3xl">${notContacted}</a>
     </div>
   `
   
 }
 
 async function unassignedstudents() {
-  let response = await fetch('/.netlify/functions/number_of_unassigned_students')
-    let students = await response.json()
+  let response = await fetch('/.netlify/functions/unassigned_students')
+  let students = await response.json()
+  let returnNumber = students.length
+  console.log(returnNumber)
     return {
-      students
+      returnNumber
     }
 
+}
+
+
+async function assignedstudents(coach) {
+
+  let response = await fetch('/.netlify/functions/assigned_students', {
+    method: 'POST',
+    body: JSON.stringify({
+      coach: coach,
+    }
+    )
+  })
+  
+  let students = await response.json()
+  let returnNumber = students.length
+
+  return {
+    returnNumber
+  }
 }
