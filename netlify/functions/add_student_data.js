@@ -25,7 +25,8 @@ exports.handler = async function(event) {
     company:  company,
     number: number,
     start: start,
-    created: createdStamp
+    created: createdStamp,
+    coach: "unassigned"
   }
 
   let newPost = await db.collection('studentData').add(newStudent)
