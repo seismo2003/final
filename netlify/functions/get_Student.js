@@ -6,59 +6,41 @@ exports.handler = async function(event) {
 
   let body = JSON.parse(event.body)
   let coach = body.coach
-  let student = body.student
+  let studentId = body.student
 
   let tempVariable = await db.collection('studentData')
                                                         .where('coach','==',coach)
-                                                        .where('studentId','==',student)
+                                                        .where('studentId','==',studentId)
                                                         .get()
 
   let studentsData = tempVariable.docs
   let student = studentsData[0]
-  let studentArray = []
+  let studentReturnData = student.data()
 
-  console.log(student)
-  
-  
-  
-  
-  
-//   for (i = 0; i < studentData.length; i ++) {
-//     let currentStudent = studentData[i].data()
-//     let studentCoach = currentStudent.coach
-   
-//       let createdDate = currentStudent.created.toDate()
-//       let month = createdDate.getMonth() +1
-//       let day = createdDate.getDate()
-//       let year = createdDate.getYear() + 1900
-//       let hours = createdDate.getHours()
-//       let minutes = createdDate.getMinutes()
-//       let shortCreatedDate = `${month}-${day}-${year} @ <i>${hours}:${minutes}</i>`
+  let createdDate = studentReturnData.created.toDate()
+      let month = createdDate.getMonth() +1
+      let day = createdDate.getDate()
+      let year = createdDate.getYear() + 1900
+      let hours = createdDate.getHours()
+      let minutes = createdDate.getMinutes()
+      let shortCreatedDate = `${month}-${day}-${year} @ <i>${hours}:${minutes}</i>`
       
-//       let assignedDate = currentStudent.coachTimestamp.toDate()
-//       let month2 = assignedDate.getMonth() +1
-//       let day2 = assignedDate.getDate()
-//       let year2 = assignedDate.getYear() + 1900
-//       let hours2 = assignedDate.getHours()
-//       let minutes2 = assignedDate.getMinutes()
-//       let shortAssignedDate = `${month2}-${day2}-${year2} @ <i>${hours2}:${minutes2}</i>`
-
-//       studentArray.push({
-//         studentId: currentStudent.studentId,
-//         studentName: currentStudent.studentName,
-//         studentEmail: currentStudent.studentEmail,
-//         program: currentStudent.program,
-//         company:  currentStudent.company,
-//         number: currentStudent.number,
-//         start: currentStudent.start,
-//         created: shortCreatedDate,
-//         assigned: shortAssignedDate
-//       })
-
-//   }
+      let assignedDate = studentReturnData.coachTimestamp.toDate()
+      let month2 = assignedDate.getMonth() +1
+      let day2 = assignedDate.getDate()
+      let year2 = assignedDate.getYear() + 1900
+      let hours2 = assignedDate.getHours()
+      let minutes2 = assignedDate.getMinutes()
+      let shortAssignedDate = `${month2}-${day2}-${year2} @ <i>${hours2}:${minutes2}</i>`
+  
+  studentReturnData.createdShort = shortCreatedDate
+  studentReturnData.assignedShort = shortAssignedDate
+  
+  console.log(student.data())
+  
 
   return {
       statusCode: 200,
-      body: JSON.stringify(student)
+      body: JSON.stringify(studentReturnData)
     }
 }
