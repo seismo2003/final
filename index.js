@@ -8,11 +8,10 @@ firebase.auth().onAuthStateChanged(async function(user) {
       email: user.email
     })
     
-    console.log('signed in')
     document.querySelector('.sign-in-or-sign-out').innerHTML = `
-    <div class="sm: flex items-center mx-4 mt-2">
+    <div class="sm:flex items-center mx-4 my-1 bg-white">
     <div class="w-1/2 text-left flex items-center">
-      <div class="mx-2 home"><img src="assets/Vinco_Logo1.webp" alt="Vinco"/></div>
+      <div class="mx-2 home"><img src="assets/Vinco_Logo1.webp" alt="Vinco" width="40" height="40"/></div>
       <div class="text-left text-gray-400 text-4xl">Vinco</div>
     </div>
 
@@ -35,7 +34,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
     let isStudent = docRef2.data()
 
     if (isCoach) {
-      document.querySelector('.student-coach').classList.add('hidden')
+      hideStudentCoach()
       let temp = await unassignedstudents()
       studentsNotContacted = temp.returnNumber
       let temp2 = await assignedstudents(user.uid)
@@ -148,6 +147,10 @@ firebase.auth().onAuthStateChanged(async function(user) {
   }
 
 })
+
+function hideStudentCoach() {
+  document.querySelector('.student-coach').classList.add('hidden')
+}
 
 function displaySurvey(user){
   document.querySelector('.main-body').innerHTML = `

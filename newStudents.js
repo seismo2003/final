@@ -3,17 +3,17 @@ let db = firebase.firestore()
 firebase.auth().onAuthStateChanged(async function(user) {
     if (user) {
       document.querySelector('.sign-in-or-sign-out').innerHTML = `
-      <div class="sm: flex items-center mx-4 mt-2">
-        <div class="w-1/2 text-left flex items-center">
-          <div class="mx-2 home"><img href="index.html" src="assets/Vinco_Logo1.webp" alt="Vinco"/></div>
-          <div class="text-left text-gray-400 text-4xl">Vinco</div>
-        </div>
-    
-        <div class="w-1/2 text-right">
-        <div class="w-full text-gray-600">Signed in as <strong>${user.displayName}</strong>
-        <button class="w-full text-gray-600 underline sign-out text-right">Sign Out</button>
-        </div>
-      </div>`
+      <div class="sm: flex items-center mx-4 my-1 bg-white">
+      <div class="w-1/2 text-left flex items-center">
+        <div class="mx-2 home"><img src="assets/Vinco_Logo1.webp" alt="Vinco" width="40" height="40"/></div>
+        <div class="text-left text-gray-400 text-4xl">Vinco</div>
+      </div>
+  
+      <div class="w-1/2 text-right">
+      <div class="w-full text-gray-600">Signed in as <strong>${user.displayName}</strong>
+      <button class="w-full text-gray-600 underline sign-out text-right">Sign Out</button>
+      </div>
+    </div>`
 
       document.querySelector('.sign-out').addEventListener('click', function(event) {
         console.log('sign out clicked')
@@ -29,6 +29,15 @@ firebase.auth().onAuthStateChanged(async function(user) {
       let response = await fetch('/.netlify/functions/unassigned_students')
       let students = await response.json()
       if (students.length>0) {
+        document.querySelector('.welcome').classList.add('text-left')
+        document.querySelector('.welcome').classList.remove('text-center')
+        document.querySelector('.welcome').classList.add('text-lg')
+        document.querySelector('.welcome').classList.remove('text-2xl') 
+        document.querySelector('.welcome').classList.add('ml-4')   
+        document.querySelector('.welcome').classList.add('mt-2') 
+        document.querySelector('.welcome').innerHTML = `
+        <strong class="text-gray-600">${user.displayName}</strong>, these are the newly registered students that have not been assigned:
+        `
         for (i = 0; i<students.length; i++) {
           printStudent(students[i]) 
           let currentStudent = students[i]
