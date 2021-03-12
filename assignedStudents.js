@@ -36,8 +36,21 @@ firebase.auth().onAuthStateChanged(async function(user) {
       
       let students = await response.json()
       if (students.length>0) {
+        document.querySelector('.welcome').classList.add('text-left')
+        document.querySelector('.welcome').classList.remove('text-center')
+        document.querySelector('.welcome').classList.add('text-lg')
+        document.querySelector('.welcome').classList.remove('text-2xl') 
+        document.querySelector('.welcome').classList.add('ml-4')   
+        document.querySelector('.welcome').classList.add('mt-2') 
+        document.querySelector('.welcome').innerHTML = `
+        <strong class="text-gray-600">${user.displayName}</strong>, these are your assigned students:
+        `
         for (i = 0; i<students.length; i++) {
           printStudent(students[i]) 
+          let currentStudent = students[i]
+          document.querySelector(`.view-${currentStudent.studentId}`).addEventListener('click', function(event) {
+            document.location.href = `studentSummary.html#${currentStudent.studentId}`
+          })
         }
       } else {
         printBlank()
@@ -62,7 +75,7 @@ async function printStudent(student) {
         <div> <strong>Assigned:</strong> ${student.assigned} </div>
       </div>
       <div class="w-full sm:w-1/2 my-1 items-center"> 
-        <button class="w-full text-gray-100 text-xl bg-green-500 hover:bg-green-600 px-4 py-2 m-auto rounded lastcontact lastcontact-${student.studentId}"> Contacted </button>
+        <button class="w-full text-gray-100 text-xl bg-green-500 hover:bg-green-600 px-4 py-2 m-auto rounded view view-${student.studentId}"> View Student </button>
       </div>
     </div>
       `
