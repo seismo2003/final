@@ -61,7 +61,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
         method: 'POST',
         body: user.uid
       })
-      // console.log(checkStudentResponse)
+      console.log(checkStudentResponse)
       let checkStudent = checkStudentResponse.status
 
       if(checkStudent == 200)
