@@ -26,6 +26,8 @@ firebase.auth().onAuthStateChanged(async function(user) {
       firebase.auth().signOut()
       document.location.href = 'index.html'
     })
+
+    // Find out whether the user is a coach or a student
     
     let docRef = await db.collection('coaches').doc(`${user.uid}`).get()
     let isCoach = docRef.data()
@@ -33,13 +35,18 @@ firebase.auth().onAuthStateChanged(async function(user) {
     let docRef2 = await db.collection('students').doc(`${user.uid}`).get()
     let isStudent = docRef2.data()
 
+    // If the user is a coach then carry out the following code
+
     if (isCoach) {
+      // Hide student/coach buttons
       hideStudentCoach()
       let temp = await unassignedstudents()
       studentsNotContacted = temp.returnNumber
       let temp2 = await assignedstudents(user.uid)
       let studentsAssigned = temp2.returnNumber
+      // Show number of students not contacted and assigned separately
       printCoachPage(studentsNotContacted,studentsAssigned)
+      // Allow us to check the students' detailed information in another html
       document.querySelector('.unassigned').addEventListener('click', function(event) {
         document.location.href = 'newStudents.html'
       })
@@ -47,8 +54,8 @@ firebase.auth().onAuthStateChanged(async function(user) {
         document.location.href = 'assignedStudents.html'
       })
     } else if (isStudent) {
+      // hideStudentCoach()
       document.querySelector('.student-coach').classList.add('hidden')
-
       
       let checkStudentResponse = await fetch('/.netlify/functions/check_student_data', {
         method: 'POST',
@@ -175,7 +182,7 @@ function displaySurvey(user){
   `
 }
 
-async function printCoachPage(notContacted,Assigned) {
+async function printCoachPage(notContacted, Assigned) {
   document.querySelector('.main-body').innerHTML = `
   <div class="p-3 sm:flex">
     <div class="assigned sm:w-1/2 block text-center text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded">
@@ -190,6 +197,7 @@ async function printCoachPage(notContacted,Assigned) {
   
 }
 
+// method by default is get
 async function unassignedstudents() {
   let response = await fetch('/.netlify/functions/unassigned_students')
   let students = await response.json()
@@ -206,6 +214,7 @@ async function assignedstudents(coach) {
 
   let response = await fetch('/.netlify/functions/assigned_students', {
     method: 'POST',
+    // Expect it to be a string instead of an object
     body: JSON.stringify({
       coach: coach,
     }
