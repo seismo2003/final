@@ -1,5 +1,13 @@
 let db = firebase.firestore()
 
+document.querySelector('.sign-in-or-sign-out').innerHTML = `
+<div class="mx-2 home"><img src="assets/Vinco_Logo1.webp" alt="Vinco" width="40" height="40"/></div>
+<div class="text-left text-gray-400 text-4xl">Vinco</div>
+<div class="container mx-auto h-full flex justify-center items-center">
+<div class="w-1/3">
+    <h1 class="font-bold mb-6 text-center text-green-500">Sign up or Login to Vinco!</h1>
+</div>`
+
 firebase.auth().onAuthStateChanged(async function(user) {
   if (user) {
     // Signed in
