@@ -27,6 +27,7 @@
 
         studentArray.push(
             {
+              studentPhoto: currentStudent.studentPhoto,
               studentId: currentStudent.studentId,
               studentName: currentStudent.studentName,
               studentEmail: currentStudent.studentEmail,

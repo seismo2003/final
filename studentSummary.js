@@ -68,7 +68,10 @@ function getClickedStudent(address) {
 async function printStudent(student) {
     let newNumber = `${student.number.substring(0,3)}-${student.number.substring(3,6)}-${student.number.substring(6,10)}`
     document.querySelector('.main-body').insertAdjacentHTML('beforeend', `
-    <div class = "sm:flex text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded items-center">
+    <div class = "sm:flex text-gray-500 border-2 border-green-500 mt-4 px-4 mx-4 py-2 rounded items-center place-items-center">
+      <div class="w-full mr-8 sm:w-1/2">
+        <img src="${student.studentPhoto}" class="w-full">
+      </div>
       <div class="w-full sm:w-1/2">  
         <div> <strong>Name:</strong> ${student.studentName} </div>
         <div> <strong>e-mail:</strong> ${student.studentEmail} </div>

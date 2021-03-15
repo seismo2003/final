@@ -33,6 +33,7 @@ exports.handler = async function(event) {
       let shortAssignedDate = `${month2}-${day2}-${year2} @ <i>${hours2}:${minutes2}</i>`
 
       studentArray.push({
+        studentPhoto: currentStudent.studentPhoto,
         studentId: currentStudent.studentId,
         studentName: currentStudent.studentName,
         studentEmail: currentStudent.studentEmail,

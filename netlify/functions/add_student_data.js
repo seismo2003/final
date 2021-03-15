@@ -10,6 +10,7 @@ exports.handler = async function(event) {
   let studentId = body.studentId
   let studentName = body.studentName
   let studentEmail = body.studentEmail
+  let studentPhoto = body.studentPhoto
   let program = body.program
   let company = body.company
   let number = body.number
@@ -18,6 +19,7 @@ exports.handler = async function(event) {
   let createdStamp = firebase.firestore.FieldValue.serverTimestamp()
   
   let newStudent = {
+    studentPhoto: studentPhoto,
     studentId: studentId,
     studentName: studentName,
     studentEmail: studentEmail,

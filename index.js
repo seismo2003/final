@@ -85,13 +85,16 @@ firebase.auth().onAuthStateChanged(async function(user) {
         document.querySelector('form').addEventListener('submit', async function(event) {
           // need to refresh so that form goes away!
           event.preventDefault()
-    
+
+          let photoUrl = document.querySelector('#photo').value
           let programText = document.querySelector('#program').value
           let companyText = document.querySelector('#company').value
           let numberText = document.querySelector('#number').value
           let startText = document.querySelector('#start').value
+  
 
           let newStudent = {
+            studentPhoto: photoUrl,
             studentId: user.uid,
             studentName: user.displayName,
             studentEmail: user.email,
@@ -187,6 +190,9 @@ function displaySurvey(user){
 
   <label for="start">When would you want to start?</label>
   <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="start" name="start"> </p> 
+
+  <label for="photo">Your lovely <strong>photo</strong>? </label>
+  <p><input class="border-2 w-full mb-2 mt-1 pb-3 rounded" type="text" id="photo" name="photo"> </p> 
 
   <button class="bg-green-500 text-white mt-1 px-4 py-2 rounded">Submit Form</button>
   </form>
