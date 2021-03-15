@@ -43,8 +43,13 @@ firebase.auth().onAuthStateChanged(async function(user) {
         document.querySelector('.welcome').classList.add('ml-4')   
         document.querySelector('.welcome').classList.add('mt-2') 
         document.querySelector('.welcome').innerHTML = `
-        <strong class="text-gray-600">${user.displayName}</strong>, these are your assigned students:
+        <strong class="text-gray-600">${user.displayName}</strong>, these are your assigned students: 
+        <div class="sm:w-1/4 text-center text-gray-100 text-md bg-gray-500 hover:bg-gray-600 px-2 py-1 m-auto returnToMain rounded"><button>Return to Main Page</button></div>
         `
+        document.querySelector('.returnToMain').addEventListener('click', function(event) {
+          document.location.href = `index.html`,'_blank'
+        })
+
         for (i = 0; i<students.length; i++) {
           printStudent(students[i]) 
           let currentStudent = students[i]
@@ -78,6 +83,7 @@ async function printStudent(student) {
         <button class="w-full text-gray-100 text-xl bg-green-500 hover:bg-green-600 px-4 py-2 m-auto rounded view view-${student.studentId}"> View Student </button>
       </div>
     </div>
+    <div>
       `
 )}
 

@@ -17,7 +17,7 @@ exports.handler = async function(event) {
     let studentCoach = currentStudent.coach
    
       let createdDate = currentStudent.created.toDate()
-      let month = createdDate.getMonth() +1
+      let month = createdDate.getMonth() + 1
       let day = createdDate.getDate()
       let year = createdDate.getYear() + 1900
       let hours = createdDate.getHours()

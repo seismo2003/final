@@ -27,7 +27,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
       document.location.href = 'index.html'
     })
 
-    // Find out whether the user is a coach or a student
+    // Find out whether the user is a coach or a student when logged in
     
     let docRef = await db.collection('coaches').doc(`${user.uid}`).get()
     let isCoach = docRef.data()
@@ -71,6 +71,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
         Thank you <strong>${user.displayName}</strong>, your form has been submitted succesfully. A coach will reach out to you soon!
         </div>`
       } else {
+        // New student
         displaySurvey(user)    
 
         document.querySelector('form').addEventListener('submit', async function(event) {
@@ -107,7 +108,8 @@ firebase.auth().onAuthStateChanged(async function(user) {
           
         })
       }
-      // stuff that happens when Student
+      // stuff that happens when Student 
+      // When the user is new
     } else {
       document.querySelector('.student-coach').innerHTML =  `
         <div class="p-3 sm:flex">
@@ -121,6 +123,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
           name: user.displayName,
           email: user.email,
         })
+        // Refresh the site after the new user picking their identity
         document.location.href = 'index.html'
       })
       document.querySelector('.student-button').addEventListener('click', function(event) {
